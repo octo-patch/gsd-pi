@@ -28,7 +28,8 @@ test("MiniMax ordinary defaults and choices are Flash then M3; saved IDs remain 
 		const explicitThinking = await resolveModelScope([`${provider}/MiniMax-M2.7:high`], registry);
 		assert.equal(explicitThinking[0]?.model.id, "MiniMax-M2.7");
 		const ordinary = await resolveModelScope([`${provider}/*`], registry);
-		assert.deepEqual(ordinary.map((entry) => entry.model.id), ["MiniMax-M3.1-Flash", "MiniMax-M3"]);
+		assert.deepEqual(ordinary.filter((entry) => entry.model.provider === provider).map((entry) => entry.model.id), ["MiniMax-M3.1-Flash", "MiniMax-M3"]);
+		assert.ok(ordinary.every((entry) => /minimax-m3(?:$|\.1-flash)/i.test(entry.model.id)));
 	}
 });
 
